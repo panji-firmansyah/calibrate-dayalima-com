@@ -85,6 +85,7 @@ body {
   max-width: var(--max-width);
   margin: 0 auto;
   border-radius: var(--border-radius-lg);
+  border: 1.5px solid rgba(196, 30, 58, 0.55);
   overflow: hidden;
   animation: fadeInUp var(--duration-slow) var(--ease-decisive),
              panelGlow 5s ease-in-out infinite;
@@ -112,8 +113,7 @@ body {
   padding: var(--space-10);
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(196, 30, 58, 0.4);
-  border-top: 2px solid rgba(196, 30, 58, 0.7);
+  /* Border dipindah ke .panel-frame supaya ngikutin border-radius dengan benar */
 }
 
 /* Scanline overlay — texture layar panel */
