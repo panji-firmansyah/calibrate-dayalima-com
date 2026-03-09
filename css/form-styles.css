@@ -1,0 +1,564 @@
+/*
+ * Calibrate Diagnostic Form — Styles
+ *
+ * Design: CALIBRATE brand — dark, cinematic, executive premium
+ * Palette: Void Black + Signal Red + warm whites
+ * Typography: Playfair Display (display) + Inter (body/UI)
+ */
+
+/* ============================================================
+   CSS VARIABLES — Design Tokens
+   ============================================================ */
+:root {
+  /* --- Core Palette --- */
+  --color-bg-primary: #0A0A0A;
+  --color-bg-elevated: #111111;
+  --color-bg-card: #1A1A1A;
+  --color-bg-input: #111111;
+  --color-text-primary: #FFFFFF;
+  --color-text-body: #E0E0E0;
+  --color-text-muted: #64748B;
+  --color-text-dark: #1A1A1A;
+  --color-accent: #C41E3A;
+  --color-accent-hover: #E02040;
+  --color-accent-glow: rgba(196, 30, 58, 0.15);
+  --color-accent-gold: #C9A84C;
+  --color-border: #2A2A2A;
+  --color-border-hover: #3A3A3A;
+
+  /* --- Semantic --- */
+  --color-success: #16A34A;
+  --color-success-bg: rgba(22, 163, 74, 0.12);
+  --color-success-border: rgba(22, 163, 74, 0.3);
+  --color-error: #EF4444;
+  --color-error-bg: rgba(239, 68, 68, 0.12);
+  --color-error-border: rgba(239, 68, 68, 0.3);
+
+  /* --- Typography --- */
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* --- Spacing --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-decisive: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  --max-width: 640px;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text-body);
+  background-color: var(--color-bg-primary);
+  line-height: 1.6;
+  padding: 40px 16px;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   PANEL FRAME — Outer shell: clip-path + pulsing glow
+   ============================================================ */
+.panel-frame {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  animation: fadeInUp var(--duration-slow) var(--ease-decisive),
+             panelGlow 5s ease-in-out infinite;
+}
+
+@keyframes panelGlow {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(196, 30, 58, 0.15),
+                0 0 32px rgba(196, 30, 58, 0.06);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(196, 30, 58, 0.32),
+                0 0 60px rgba(196, 30, 58, 0.14);
+  }
+}
+
+/* ============================================================
+   FORM CONTAINER — Inner panel content
+   ============================================================ */
+.form-container {
+  background: var(--color-bg-card);
+  padding: var(--space-10);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(196, 30, 58, 0.3);
+  border-top: 3px solid var(--color-accent);
+}
+
+/* Scanline overlay — texture layar panel */
+.form-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.04) 3px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Pastikan semua konten form di atas scanlines */
+.form-container > *:not(.cb) {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   CORNER BRACKETS — HUD panel markers
+   ============================================================ */
+.cb {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cb.tl { top: 20px; left: 20px; }
+.cb.tr { top: 20px; right: 20px; }
+.cb.bl { bottom: 20px; left: 20px; }
+.cb.br { bottom: 20px; right: 20px; }
+
+.cb::before,
+.cb::after {
+  content: '';
+  position: absolute;
+  background: var(--color-accent);
+  opacity: 0.7;
+}
+
+/* top-left */
+.cb.tl::before { top: 0; left: 0; width: 100%; height: 1.5px; }
+.cb.tl::after  { top: 0; left: 0; width: 1.5px; height: 100%; }
+/* top-right */
+.cb.tr::before { top: 0; right: 0; width: 100%; height: 1.5px; }
+.cb.tr::after  { top: 0; right: 0; width: 1.5px; height: 100%; }
+/* bottom-left */
+.cb.bl::before { bottom: 0; left: 0; width: 100%; height: 1.5px; }
+.cb.bl::after  { bottom: 0; left: 0; width: 1.5px; height: 100%; }
+/* bottom-right */
+.cb.br::before { bottom: 0; right: 0; width: 100%; height: 1.5px; }
+.cb.br::after  { bottom: 0; right: 0; width: 1.5px; height: 100%; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.form-header {
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.form-brand {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+
+.form-container h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.5rem;
+  color: var(--color-text-primary);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: var(--space-1);
+}
+
+.form-title-sub {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.form-container .form-desc {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   FORM SECTIONS
+   ============================================================ */
+.form-section {
+  margin-bottom: var(--space-10);
+  padding-bottom: var(--space-10);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: var(--space-6);
+  padding-bottom: 0;
+}
+
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-6);
+}
+
+.section-desc {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  margin-bottom: var(--space-8);
+  font-style: italic;
+}
+
+/* ============================================================
+   FORM FIELDS
+   ============================================================ */
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.required {
+  color: var(--color-accent);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"] {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-input);
+  transition: border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.form-group input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.form-group input:hover {
+  border-color: var(--color-border-hover);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-glow);
+}
+
+.form-group.has-error input {
+  border-color: var(--color-error);
+}
+
+.form-group.has-error input:focus {
+  box-shadow: 0 0 0 2px var(--color-error-bg);
+}
+
+/* ============================================================
+   DIAGNOSTIC QUESTION ITEMS
+   ============================================================ */
+.question-item {
+  margin-bottom: var(--space-10);
+}
+
+.question-item:last-child {
+  margin-bottom: 0;
+}
+
+.question-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: var(--space-2);
+}
+
+.question-text {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-6);
+  line-height: 1.55;
+}
+
+.question-text em {
+  font-style: italic;
+  color: var(--color-text-body);
+}
+
+/* ============================================================
+   RATING BUTTONS — Horizontal tap buttons
+   ============================================================ */
+.rating-group {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.rating-btn {
+  flex: 1;
+  padding: var(--space-3) var(--space-1);
+  min-height: 52px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 0;
+}
+
+.rating-btn:hover {
+  border-color: var(--color-border-hover);
+  background: var(--color-bg-card);
+  color: var(--color-text-body);
+}
+
+.rating-btn.selected {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text-primary);
+}
+
+.rating-btn:active {
+  transform: scale(0.95);
+}
+
+/* Label kiri-kanan di bawah rating group */
+.rating-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+  padding: 0 2px;
+}
+
+.rating-labels span {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   FIELD ERROR
+   ============================================================ */
+.field-error {
+  color: var(--color-error);
+  font-size: 0.8rem;
+  margin-top: var(--space-1);
+  min-height: 0;
+}
+
+/* ============================================================
+   SUBMIT BUTTON
+   ============================================================ */
+.btn-submit {
+  display: block;
+  width: 100%;
+  padding: var(--space-4) var(--space-6);
+  min-height: 56px;
+  border: none;
+  border-radius: 0;
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              transform 0.1s ease;
+  margin-bottom: var(--space-6);
+}
+
+.btn-submit:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.btn-submit:active {
+  transform: scale(0.99);
+}
+
+.btn-submit:disabled {
+  background-color: var(--color-border);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================================
+   FORM MESSAGE — Sukses/error setelah submit
+   ============================================================ */
+.form-message {
+  display: none;
+  padding: var(--space-8);
+  font-size: 0.9rem;
+  margin-top: var(--space-4);
+  text-align: center;
+  animation: fadeInUp 300ms var(--ease-decisive);
+}
+
+.form-message.success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-success-border);
+}
+
+.form-message.error {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+  border: 1px solid var(--color-error-border);
+}
+
+.form-message h3 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.form-message p {
+  margin-bottom: var(--space-2);
+  color: var(--color-text-body);
+}
+
+/* ============================================================
+   HONEYPOT
+   ============================================================ */
+.hp-field {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.form-footer {
+  text-align: center;
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.form-footer p {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+
+.form-footer .footer-brand {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 480px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  .form-container {
+    padding: var(--space-6);
+  }
+
+  .form-container h1 {
+    font-size: 2rem;
+  }
+
+  .question-text {
+    font-size: 1rem;
+  }
+
+  .rating-btn {
+    min-height: 48px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .form-container {
+    padding: var(--space-4);
+  }
+
+  .rating-group {
+    gap: var(--space-1);
+  }
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CALIBRATE — Talent Diagnostic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/form-styles.css">
+</head>
+<body>
+
+  <div class="panel-frame">
+  <div class="form-container">
+
+    <!-- Corner brackets — dekorasi HUD panel -->
+    <span class="cb tl"></span>
+    <span class="cb tr"></span>
+    <span class="cb bl"></span>
+    <span class="cb br"></span>
+
+    <!-- ============================================================
+         HEADER
+         ============================================================ -->
+    <div class="form-header">
+      <div class="form-brand">DAYA LIMA</div>
+      <h1>CALIBRATE</h1>
+      <div class="form-title-sub">Talent Diagnostic</div>
+      <p class="form-desc">Isi 5 pertanyaan singkat tentang talent di organisasi Anda.<br>Hasilnya akan menjadi bagian dari personalized scorecard Anda.</p>
+    </div>
+
+    <form id="calibrate-form" novalidate>
+
+      <!-- ============================================================
+           SECTION 1: TENTANG ANDA
+           ============================================================ -->
+      <div class="form-section">
+        <div class="section-label">Tentang Anda</div>
+
+        <div class="form-group">
+          <label for="nama">Nama Lengkap <span class="required">*</span></label>
+          <input type="text" id="nama" name="nama" required placeholder="Nama lengkap">
+          <div class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="perusahaan">Perusahaan <span class="required">*</span></label>
+          <input type="text" id="perusahaan" name="perusahaan" required placeholder="Nama perusahaan">
+          <div class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="jabatan">Jabatan <span class="required">*</span></label>
+          <input type="text" id="jabatan" name="jabatan" required placeholder="Jabatan Anda">
+          <div class="field-error"></div>
+        </div>
+
+        <!-- Honeypot anti-spam -->
+        <div class="form-group hp-field" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SECTION 2: TALENT DIAGNOSTIC
+           ============================================================ -->
+      <div class="form-section">
+        <div class="section-label">Talent Diagnostic</div>
+        <p class="section-desc">Tidak ada jawaban benar atau salah.<br>Jawab sesuai kondisi organisasi Anda saat ini.</p>
+
+        <!-- Q1 — Hiring Effectiveness -->
+        <div class="question-item" data-question="q1_hiring">
+          <div class="question-label">Proses Rekrutmen</div>
+          <div class="question-text">Seberapa yakin Anda bahwa proses rekrutmen organisasi Anda secara konsisten menghasilkan orang yang tepat — bukan hanya yang <em>qualified</em>?</div>
+          <div class="rating-group">
+            <button type="button" class="rating-btn" data-value="1">1</button>
+            <button type="button" class="rating-btn" data-value="2">2</button>
+            <button type="button" class="rating-btn" data-value="3">3</button>
+            <button type="button" class="rating-btn" data-value="4">4</button>
+            <button type="button" class="rating-btn" data-value="5">5</button>
+          </div>
+          <div class="rating-labels">
+            <span>Sangat Tidak Yakin</span>
+            <span>Sangat Yakin</span>
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+        <!-- Q2 — Performance Activation -->
+        <div class="question-item" data-question="q2_activation">
+          <div class="question-label">Aktivasi New Hire</div>
+          <div class="question-text">Seberapa efektif organisasi Anda dalam membuat <em>new hire</em> produktif dan <em>committed</em> dalam 90 hari pertama?</div>
+          <div class="rating-group">
+            <button type="button" class="rating-btn" data-value="1">1</button>
+            <button type="button" class="rating-btn" data-value="2">2</button>
+            <button type="button" class="rating-btn" data-value="3">3</button>
+            <button type="button" class="rating-btn" data-value="4">4</button>
+            <button type="button" class="rating-btn" data-value="5">5</button>
+          </div>
+          <div class="rating-labels">
+            <span>Sangat Tidak Yakin</span>
+            <span>Sangat Yakin</span>
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+        <!-- Q3 — Succession Readiness -->
+        <div class="question-item" data-question="q3_succession">
+          <div class="question-label">Kesiapan Suksesi</div>
+          <div class="question-text">Jika 3 orang terpenting di organisasi Anda resign bulan depan — seberapa siap Anda dengan penggantinya?</div>
+          <div class="rating-group">
+            <button type="button" class="rating-btn" data-value="1">1</button>
+            <button type="button" class="rating-btn" data-value="2">2</button>
+            <button type="button" class="rating-btn" data-value="3">3</button>
+            <button type="button" class="rating-btn" data-value="4">4</button>
+            <button type="button" class="rating-btn" data-value="5">5</button>
+          </div>
+          <div class="rating-labels">
+            <span>Sangat Tidak Yakin</span>
+            <span>Sangat Yakin</span>
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+        <!-- Q4 — Data-Driven Talent -->
+        <div class="question-item" data-question="q4_data">
+          <div class="question-label">Keputusan Berbasis Data</div>
+          <div class="question-text">Sejauh mana keputusan talent di organisasi Anda — <em>hiring</em>, promosi, <em>retention</em> — didasarkan pada data, bukan <em>feeling</em>?</div>
+          <div class="rating-group">
+            <button type="button" class="rating-btn" data-value="1">1</button>
+            <button type="button" class="rating-btn" data-value="2">2</button>
+            <button type="button" class="rating-btn" data-value="3">3</button>
+            <button type="button" class="rating-btn" data-value="4">4</button>
+            <button type="button" class="rating-btn" data-value="5">5</button>
+          </div>
+          <div class="rating-labels">
+            <span>Sangat Tidak Yakin</span>
+            <span>Sangat Yakin</span>
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+        <!-- Q5 — Lifecycle Integration -->
+        <div class="question-item" data-question="q5_integration">
+          <div class="question-label">Integrasi Proses Talent</div>
+          <div class="question-text">Seberapa terkoneksi proses <em>hiring</em>, <em>onboarding</em>, <em>performance</em>, dan <em>succession planning</em> di organisasi Anda?</div>
+          <div class="rating-group">
+            <button type="button" class="rating-btn" data-value="1">1</button>
+            <button type="button" class="rating-btn" data-value="2">2</button>
+            <button type="button" class="rating-btn" data-value="3">3</button>
+            <button type="button" class="rating-btn" data-value="4">4</button>
+            <button type="button" class="rating-btn" data-value="5">5</button>
+          </div>
+          <div class="rating-labels">
+            <span>Sangat Tidak Yakin</span>
+            <span>Sangat Yakin</span>
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+      </div>
+
+      <!-- ============================================================
+           SUBMIT
+           ============================================================ -->
+      <button type="submit" class="btn-submit">SUBMIT DIAGNOSTIC</button>
+
+    </form>
+
+    <div id="form-message" class="form-message"></div>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <div class="form-footer">
+      <p>Jawaban Anda bersifat konfidensial dan hanya digunakan untuk menyusun personalized scorecard Anda.</p>
+      <div class="footer-brand">CALIBRATE — Executive Peer Insight Exchange<br>Daya Lima Group</div>
+    </div>
+
+  </div>
+  </div>
+
+  <script src="js/galaxy-bg.js"></script>
+  <script src="js/form-handler.js"></script>
+</body>
+</html>
