@@ -12,7 +12,7 @@
 </head>
 <body>
 
-  <div class="panel-frame" style="max-width: 900px;">
+  <div class="panel-frame dashboard-frame">
   <div class="dashboard-container">
 
     <!-- ============================================================
@@ -21,7 +21,7 @@
     <div class="dashboard-header">
       <div class="dashboard-eyebrow">DAYA LIMA</div>
       <h1 class="dashboard-title">CALIBRATE</h1>
-      <div class="dashboard-subtitle">Dashboard</div>
+      <div class="dashboard-subtitle">Talent Diagnostic — Dashboard</div>
       <div class="dashboard-meta" id="dashboard-meta"></div>
     </div>
 
@@ -46,38 +46,52 @@
          ============================================================ -->
     <div id="dashboard-content" style="display: none;">
 
-      <!-- STAT CARDS -->
+      <!-- ROW 1: STAT CARDS (5 cards) -->
       <div class="stat-cards">
         <div class="stat-card">
-          <span class="stat-label">Total Responden</span>
           <span class="stat-value" id="stat-total">0</span>
+          <span class="stat-label">Responden</span>
         </div>
         <div class="stat-card">
-          <span class="stat-label">Rata-rata Score</span>
           <span class="stat-value" id="stat-avg-score">0</span>
+          <span class="stat-label">Rata-rata Score</span>
         </div>
         <div class="stat-card">
+          <span class="stat-value" id="stat-avg-tier" style="font-size: 1.1rem;">—</span>
           <span class="stat-label">Tier Rata-rata</span>
-          <span class="stat-value" id="stat-avg-tier" style="font-size: 1.25rem;">—</span>
+        </div>
+        <div class="stat-card stat-card--highlight stat-card--strong">
+          <span class="stat-value" id="stat-strongest">—</span>
+          <span class="stat-label">Dimensi Terkuat</span>
+        </div>
+        <div class="stat-card stat-card--highlight stat-card--weak">
+          <span class="stat-value" id="stat-weakest">—</span>
+          <span class="stat-label">Perlu Perhatian</span>
         </div>
       </div>
 
-      <!-- RADAR CHART -->
-      <div class="dashboard-section">
-        <div class="section-title">Rata-rata Per Dimensi</div>
-        <div class="radar-container" id="radar-chart"></div>
+      <!-- ROW 2: RADAR CHART + DIMENSION BARS (2 kolom) -->
+      <div class="dashboard-row">
+        <div class="dashboard-section dashboard-col">
+          <div class="section-title">Profil Rata-rata</div>
+          <div class="radar-container" id="radar-chart"></div>
+        </div>
+        <div class="dashboard-section dashboard-col">
+          <div class="section-title">Skor Per Dimensi</div>
+          <div class="dimension-list" id="dimension-bars"></div>
+        </div>
       </div>
 
-      <!-- DIMENSION BARS -->
-      <div class="dashboard-section">
-        <div class="section-title">Skor Per Dimensi</div>
-        <div class="dimension-list" id="dimension-bars"></div>
-      </div>
-
-      <!-- TIER DISTRIBUTION -->
-      <div class="dashboard-section">
-        <div class="section-title">Distribusi Tier</div>
-        <div class="tier-list" id="tier-distribution"></div>
+      <!-- ROW 3: TIER DISTRIBUTION + DIMENSI BREAKDOWN (2 kolom) -->
+      <div class="dashboard-row">
+        <div class="dashboard-section dashboard-col">
+          <div class="section-title">Distribusi Tier</div>
+          <div class="tier-list" id="tier-distribution"></div>
+        </div>
+        <div class="dashboard-section dashboard-col">
+          <div class="section-title">Distribusi Jawaban Per Dimensi</div>
+          <div class="breakdown-list" id="dimension-breakdown"></div>
+        </div>
       </div>
 
       <!-- EXPORT BUTTON -->

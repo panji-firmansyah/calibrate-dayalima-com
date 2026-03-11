@@ -3,7 +3,7 @@
  *
  * Fetch data dari Google Sheets via Apps Script doGet(),
  * render summary cards, radar chart (SVG), dimension bars,
- * tier distribution, dan PDF export.
+ * tier distribution, dimensi breakdown, dan PDF export.
  */
 
 // URL webhook — sama dengan yang di form-handler.js
@@ -97,6 +97,7 @@ function renderDashboard(data) {
   renderRadarChart(averages);
   renderDimensionBars(averages);
   renderTierDistribution(tierDist, data.length);
+  renderDimensionBreakdown(data);
   updateMeta(data);
 
   // Trigger bar animations setelah render
@@ -163,7 +164,6 @@ function getTier(totalScore) {
       return TIERS[i];
     }
   }
-  // Fallback: score di luar range
   if (totalScore < 5) return TIERS[0];
   return TIERS[TIERS.length - 1];
 }
@@ -172,6 +172,28 @@ function getDimensionInsight(score) {
   if (score < 2.5) return "Perlu perhatian segera";
   if (score < 3.5) return "Dalam pengembangan";
   return "Area kekuatan";
+}
+
+// Cari dimensi terkuat & terlemah
+function findStrongestWeakest(averages) {
+  var strongest = null;
+  var weakest = null;
+  var maxScore = -1;
+  var minScore = 6;
+
+  DIMENSIONS.forEach(function (dim) {
+    var score = averages[dim.key];
+    if (score > maxScore) {
+      maxScore = score;
+      strongest = dim;
+    }
+    if (score < minScore) {
+      minScore = score;
+      weakest = dim;
+    }
+  });
+
+  return { strongest: strongest, weakest: weakest };
 }
 
 // ============================================================
@@ -190,6 +212,17 @@ function renderSummaryCards(data, averages) {
   var tierEl = document.getElementById("stat-avg-tier");
   tierEl.textContent = avgTier.label;
   tierEl.style.color = avgTier.color;
+
+  // Dimensi terkuat & terlemah
+  var sw = findStrongestWeakest(averages);
+  if (sw.strongest) {
+    document.getElementById("stat-strongest").textContent =
+      sw.strongest.short + " (" + averages[sw.strongest.key].toFixed(1) + ")";
+  }
+  if (sw.weakest) {
+    document.getElementById("stat-weakest").textContent =
+      sw.weakest.short + " (" + averages[sw.weakest.key].toFixed(1) + ")";
+  }
 }
 
 // ============================================================
@@ -197,13 +230,12 @@ function renderSummaryCards(data, averages) {
 // ============================================================
 function renderRadarChart(averages) {
   var container = document.getElementById("radar-chart");
-  var size = 360;
+  var size = 400;
   var cx = size / 2;
   var cy = size / 2;
-  var radius = 130;
+  var radius = 145;
   var levels = 5;
 
-  // Hitung posisi untuk setiap axis
   var axes = DIMENSIONS.map(function (dim, i) {
     var angle = -Math.PI / 2 + (2 * Math.PI / DIMENSIONS.length) * i;
     return {
@@ -231,7 +263,7 @@ function renderRadarChart(averages) {
 
     svgParts.push(
       '<polygon points="' + points + '" ' +
-      'fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>'
+      'fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>'
     );
   }
 
@@ -242,11 +274,11 @@ function renderRadarChart(averages) {
     svgParts.push(
       '<line x1="' + cx + '" y1="' + cy + '" ' +
       'x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" ' +
-      'stroke="rgba(255,255,255,0.06)" stroke-width="1"/>'
+      'stroke="rgba(255,255,255,0.07)" stroke-width="1"/>'
     );
   });
 
-  // Score polygon
+  // Score polygon — glow effect
   var scorePoints = axes
     .map(function (axis) {
       var score = averages[axis.key] || 0;
@@ -257,12 +289,27 @@ function renderRadarChart(averages) {
     })
     .join(" ");
 
+  // Glow layer
   svgParts.push(
     '<polygon points="' + scorePoints + '" ' +
-    'fill="rgba(196,30,58,0.2)" stroke="#C41E3A" stroke-width="2"/>'
+    'fill="rgba(196,30,58,0.12)" stroke="rgba(196,30,58,0.4)" stroke-width="4" ' +
+    'filter="url(#glow)"/>'
   );
 
-  // Score dots pada setiap vertex
+  // Main polygon
+  svgParts.push(
+    '<polygon points="' + scorePoints + '" ' +
+    'fill="rgba(196,30,58,0.22)" stroke="#C41E3A" stroke-width="2"/>'
+  );
+
+  // SVG filter for glow
+  svgParts.push(
+    '<defs><filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/>' +
+    '<feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>' +
+    '</filter></defs>'
+  );
+
+  // Score dots
   axes.forEach(function (axis) {
     var score = averages[axis.key] || 0;
     var r = (radius * score) / 5;
@@ -270,40 +317,37 @@ function renderRadarChart(averages) {
     var y = cy + r * Math.sin(axis.angle);
     svgParts.push(
       '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" ' +
-      'r="4" fill="#C41E3A" stroke="#0A0A0A" stroke-width="1.5"/>'
+      'r="5" fill="#C41E3A" stroke="#0A0A0A" stroke-width="2"/>'
     );
   });
 
   // Axis labels + score
   axes.forEach(function (axis) {
     var score = averages[axis.key] || 0;
-    var labelR = radius + 28;
+    var labelR = radius + 30;
     var x = cx + labelR * Math.cos(axis.angle);
     var y = cy + labelR * Math.sin(axis.angle);
 
-    // Text anchor berdasarkan posisi
     var anchor = "middle";
     if (Math.cos(axis.angle) > 0.3) anchor = "start";
     if (Math.cos(axis.angle) < -0.3) anchor = "end";
 
-    // Adjust y untuk label di atas/bawah
     var yOffset = 0;
     if (Math.sin(axis.angle) < -0.3) yOffset = -6;
-    if (Math.sin(axis.angle) > 0.3) yOffset = 12;
+    if (Math.sin(axis.angle) > 0.3) yOffset = 14;
 
     svgParts.push(
       '<text x="' + x.toFixed(1) + '" y="' + (y + yOffset).toFixed(1) + '" ' +
       'text-anchor="' + anchor + '" ' +
-      'fill="#E0E0E0" font-size="11" font-weight="600">' +
+      'fill="#E0E0E0" font-size="12" font-weight="600">' +
       axis.label +
       "</text>"
     );
 
-    // Score number di bawah label
     svgParts.push(
-      '<text x="' + x.toFixed(1) + '" y="' + (y + yOffset + 14).toFixed(1) + '" ' +
+      '<text x="' + x.toFixed(1) + '" y="' + (y + yOffset + 16).toFixed(1) + '" ' +
       'text-anchor="' + anchor + '" ' +
-      'fill="#C41E3A" font-size="12" font-weight="800">' +
+      'fill="#C41E3A" font-size="14" font-weight="800">' +
       score.toFixed(1) +
       "</text>"
     );
@@ -325,7 +369,6 @@ function renderDimensionBars(averages) {
     var pct = (score / 5) * 100;
     var insight = getDimensionInsight(score);
 
-    // Warna gradasi: merah → gold → hijau berdasarkan score
     var color;
     if (score < 2.5) color = "#C41E3A";
     else if (score < 3.5) color = "#C9A84C";
@@ -355,7 +398,6 @@ function renderTierDistribution(dist, total) {
   var container = document.getElementById("tier-distribution");
   var html = "";
 
-  // Render dari tier tertinggi ke terendah
   for (var i = TIERS.length - 1; i >= 0; i--) {
     var tier = TIERS[i];
     var count = dist[tier.label] || 0;
@@ -375,6 +417,57 @@ function renderTierDistribution(dist, total) {
         "</span>" +
       "</div>";
   }
+
+  container.innerHTML = html;
+}
+
+// ============================================================
+// RENDER DIMENSI BREAKDOWN — Distribusi jawaban 1-5 per dimensi
+// ============================================================
+function renderDimensionBreakdown(data) {
+  var container = document.getElementById("dimension-breakdown");
+  var total = data.length;
+  var html = "";
+
+  DIMENSIONS.forEach(function (dim) {
+    // Hitung distribusi jawaban 1-5
+    var counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    data.forEach(function (row) {
+      var val = parseInt(row[dim.key]) || 0;
+      if (val >= 1 && val <= 5) {
+        counts[val]++;
+      }
+    });
+
+    html += '<div class="breakdown-item">';
+    html += '<div class="breakdown-label">' + dim.short + "</div>";
+    html += '<div class="breakdown-bars">';
+
+    for (var s = 1; s <= 5; s++) {
+      var pct = total > 0 ? (counts[s] / total) * 100 : 0;
+      var label = pct >= 12 ? counts[s] : "";
+      html +=
+        '<div class="breakdown-segment" data-score="' + s + '" ' +
+        'data-width="' + pct + '" ' +
+        'title="Skor ' + s + ': ' + counts[s] + ' (' + Math.round(pct) + '%)">' +
+        label +
+        "</div>";
+    }
+
+    html += "</div></div>";
+  });
+
+  // Legend
+  html += '<div class="breakdown-legend">';
+  var legendColors = ["#C41E3A", "#D4614E", "#C9A84C", "#6DAF5C", "#16A34A"];
+  for (var s = 1; s <= 5; s++) {
+    html +=
+      '<div class="legend-item">' +
+      '<div class="legend-dot" style="background:' + legendColors[s - 1] + ';"></div>' +
+      "Skor " + s +
+      "</div>";
+  }
+  html += "</div>";
 
   container.innerHTML = html;
 }
@@ -404,7 +497,7 @@ function updateMeta(data) {
 // ============================================================
 function animateBars() {
   var fills = document.querySelectorAll(
-    ".dimension-bar-fill, .tier-bar-fill"
+    ".dimension-bar-fill, .tier-bar-fill, .breakdown-segment"
   );
   fills.forEach(function (el) {
     var width = el.getAttribute("data-width");
@@ -436,14 +529,14 @@ function exportToPDF() {
     .then(function (canvas) {
       var imgData = canvas.toDataURL("image/png");
       var pdf = new jspdf.jsPDF({
-        orientation: "portrait",
+        orientation: "landscape",
         unit: "mm",
         format: "a4",
       });
 
       var pdfWidth = pdf.internal.pageSize.getWidth();
       var pdfHeight = pdf.internal.pageSize.getHeight();
-      var margin = 10;
+      var margin = 8;
       var contentWidth = pdfWidth - margin * 2;
 
       var imgWidth = canvas.width;

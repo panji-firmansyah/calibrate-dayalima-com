@@ -2,14 +2,18 @@
  * Calibrate Dashboard — Admin Styles
  *
  * Reuses design tokens dari form-styles.css
- * Layout: dark glassmorphism, wider max-width untuk dashboard
+ * Layout: 2-column wide-screen optimized untuk presentasi layar besar
  */
 
 /* ============================================================
-   DASHBOARD LAYOUT
+   DASHBOARD LAYOUT — Wide screen
    ============================================================ */
+.dashboard-frame {
+  max-width: 1200px;
+}
+
 .dashboard-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-10);
   position: relative;
@@ -49,11 +53,27 @@
 }
 
 /* ============================================================
+   2-COLUMN ROW LAYOUT
+   ============================================================ */
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.dashboard-col {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* ============================================================
    DASHBOARD HEADER
    ============================================================ */
 .dashboard-header {
   text-align: center;
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-8);
 }
 
 .dashboard-eyebrow {
@@ -69,7 +89,7 @@
 .dashboard-title {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   color: var(--color-text-primary);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -134,20 +154,20 @@
 }
 
 /* ============================================================
-   STAT CARDS
+   STAT CARDS — 5 cards in a row
    ============================================================ */
 .stat-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-4);
-  margin-bottom: var(--space-10);
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
 }
 
 .stat-card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--border-radius);
-  padding: var(--space-6) var(--space-4);
+  padding: var(--space-4) var(--space-3);
   text-align: center;
   transition: border-color var(--duration-fast) var(--ease-out);
 }
@@ -158,27 +178,50 @@
 
 .stat-value {
   font-family: var(--font-display);
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--color-text-primary);
-  line-height: 1;
-  margin-bottom: var(--space-2);
+  line-height: 1.1;
+  margin-bottom: var(--space-1);
 }
 
 .stat-label {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
   color: var(--color-text-muted);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+/* Highlight cards: terkuat & terlemah */
+.stat-card--strong {
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+.stat-card--strong .stat-value {
+  color: #16A34A;
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+.stat-card--weak {
+  border-color: rgba(196, 30, 58, 0.3);
+}
+
+.stat-card--weak .stat-value {
+  color: #C41E3A;
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
 }
 
 /* ============================================================
    SECTION DIVIDERS
    ============================================================ */
 .dashboard-section {
-  margin-bottom: var(--space-10);
-  padding-bottom: var(--space-10);
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-8);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
@@ -209,7 +252,7 @@
 
 .radar-container svg {
   width: 100%;
-  max-width: 360px;
+  max-width: 400px;
   height: auto;
 }
 
@@ -223,15 +266,13 @@
 .dimension-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-  max-width: 600px;
-  margin: 0 auto;
+  gap: var(--space-4);
 }
 
 .dimension-item {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-1);
 }
 
 .dimension-header {
@@ -256,21 +297,21 @@
 
 .dimension-bar-track {
   width: 100%;
-  height: 8px;
+  height: 10px;
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 4px;
+  border-radius: 5px;
   overflow: hidden;
 }
 
 .dimension-bar-fill {
   height: 100%;
-  border-radius: 4px;
+  border-radius: 5px;
   transition: width 0.8s var(--ease-decisive);
   width: 0;
 }
 
 .dimension-insight {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--color-text-muted);
   font-style: italic;
 }
@@ -282,13 +323,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  max-width: 600px;
-  margin: 0 auto;
 }
 
 .tier-item {
   display: grid;
-  grid-template-columns: 120px 1fr auto;
+  grid-template-columns: 110px 1fr auto;
   gap: var(--space-3);
   align-items: center;
 }
@@ -300,7 +339,7 @@
 }
 
 .tier-bar-track {
-  height: 24px;
+  height: 28px;
   background: rgba(255, 255, 255, 0.04);
   border-radius: 4px;
   overflow: hidden;
@@ -327,11 +366,85 @@
 }
 
 /* ============================================================
+   DIMENSI BREAKDOWN — Distribusi jawaban 1-5 per dimensi
+   ============================================================ */
+.breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.breakdown-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.breakdown-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-body);
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-1);
+}
+
+.breakdown-bars {
+  display: flex;
+  gap: 2px;
+  height: 24px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.breakdown-segment {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  transition: width 0.8s var(--ease-decisive);
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Warna per skor 1-5 */
+.breakdown-segment[data-score="1"] { background: #C41E3A; }
+.breakdown-segment[data-score="2"] { background: #D4614E; }
+.breakdown-segment[data-score="3"] { background: #C9A84C; }
+.breakdown-segment[data-score="4"] { background: #6DAF5C; }
+.breakdown-segment[data-score="5"] { background: #16A34A; }
+
+.breakdown-legend {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-top: var(--space-2);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.55rem;
+  color: var(--color-text-muted);
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
    EXPORT BUTTON
    ============================================================ */
 .dashboard-actions {
   text-align: center;
-  margin-top: var(--space-10);
+  margin-top: var(--space-8);
 }
 
 .btn-export {
@@ -400,31 +513,45 @@
   background: #0A0A0A !important;
 }
 
+.pdf-capture .dashboard-container::before {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: #0A0A0A !important;
+}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 768px) {
-  .stat-cards {
+@media (max-width: 900px) {
+  .dashboard-frame {
+    max-width: 100%;
+  }
+
+  .dashboard-row {
     grid-template-columns: 1fr;
-    gap: var(--space-3);
+    gap: var(--space-6);
   }
 
-  .stat-card {
-    padding: var(--space-4) var(--space-3);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: left;
+  .stat-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: var(--space-6);
   }
 
-  .stat-value {
-    font-size: 1.75rem;
-    margin-bottom: 0;
-    order: 2;
+  .stat-cards {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .stat-label {
-    order: 1;
+  .dashboard-title {
+    font-size: 1.8rem;
+  }
+
+  .radar-container svg {
+    max-width: 280px;
   }
 
   .tier-item {
@@ -432,17 +559,9 @@
   }
 }
 
-@media (max-width: 480px) {
-  .dashboard-container {
-    padding: var(--space-6);
-  }
-
-  .dashboard-title {
-    font-size: 1.6rem;
-  }
-
-  .radar-container svg {
-    max-width: 280px;
+@media (max-width: 400px) {
+  .stat-cards {
+    grid-template-columns: 1fr;
   }
 
   .tier-item {
