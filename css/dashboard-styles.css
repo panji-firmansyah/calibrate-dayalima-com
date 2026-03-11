@@ -1,0 +1,456 @@
+/*
+ * Calibrate Dashboard — Admin Styles
+ *
+ * Reuses design tokens dari form-styles.css
+ * Layout: dark glassmorphism, wider max-width untuk dashboard
+ */
+
+/* ============================================================
+   DASHBOARD LAYOUT
+   ============================================================ */
+.dashboard-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-10);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glassmorphism inner */
+.dashboard-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.52);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  z-index: 0;
+}
+
+/* Scanline overlay */
+.dashboard-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.04) 3px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dashboard-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   DASHBOARD HEADER
+   ============================================================ */
+.dashboard-header {
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.dashboard-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+
+.dashboard-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.2rem;
+  color: var(--color-text-primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.dashboard-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.dashboard-meta {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+/* ============================================================
+   LOADING & ERROR STATES
+   ============================================================ */
+.dashboard-loading,
+.dashboard-error {
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+}
+
+.dashboard-loading {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(196, 30, 58, 0.2);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: var(--space-4);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.dashboard-error {
+  color: var(--color-error);
+  font-size: 0.9rem;
+}
+
+.dashboard-empty {
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   STAT CARDS
+   ============================================================ */
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-10);
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius);
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.stat-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   SECTION DIVIDERS
+   ============================================================ */
+.dashboard-section {
+  margin-bottom: var(--space-10);
+  padding-bottom: var(--space-10);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.dashboard-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: var(--space-6);
+  padding-bottom: 0;
+}
+
+.section-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-6);
+  text-align: center;
+}
+
+/* ============================================================
+   RADAR CHART
+   ============================================================ */
+.radar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.radar-container svg {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+}
+
+.radar-container svg text {
+  font-family: var(--font-sans);
+}
+
+/* ============================================================
+   DIMENSION BARS
+   ============================================================ */
+.dimension-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dimension-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dimension-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.dimension-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-body);
+  letter-spacing: 0.04em;
+}
+
+.dimension-score {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.dimension-bar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dimension-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s var(--ease-decisive);
+  width: 0;
+}
+
+.dimension-insight {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* ============================================================
+   TIER DISTRIBUTION
+   ============================================================ */
+.tier-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tier-item {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.tier-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-body);
+}
+
+.tier-bar-track {
+  height: 24px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tier-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s var(--ease-decisive);
+  display: flex;
+  align-items: center;
+  padding-left: var(--space-2);
+  min-width: 0;
+  width: 0;
+}
+
+.tier-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* ============================================================
+   EXPORT BUTTON
+   ============================================================ */
+.dashboard-actions {
+  text-align: center;
+  margin-top: var(--space-10);
+}
+
+.btn-export {
+  display: inline-block;
+  padding: var(--space-4) var(--space-8);
+  min-height: 52px;
+  border: 1.5px solid var(--color-accent-gold);
+  border-radius: var(--border-radius);
+  background: rgba(201, 168, 76, 0.1);
+  color: var(--color-accent-gold);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.btn-export:hover {
+  background: rgba(201, 168, 76, 0.2);
+  box-shadow: 0 0 16px rgba(201, 168, 76, 0.15);
+}
+
+.btn-export:active {
+  transform: scale(0.98);
+}
+
+.btn-export:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.dashboard-footer {
+  text-align: center;
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.dashboard-footer p {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
+/* ============================================================
+   PDF CAPTURE — Override untuk html2canvas
+   ============================================================ */
+.pdf-capture {
+  background: #0A0A0A !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.pdf-capture::before {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: #0A0A0A !important;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .stat-cards {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .stat-card {
+    padding: var(--space-4) var(--space-3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+    margin-bottom: 0;
+    order: 2;
+  }
+
+  .stat-label {
+    order: 1;
+  }
+
+  .tier-item {
+    grid-template-columns: 90px 1fr auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: var(--space-6);
+  }
+
+  .dashboard-title {
+    font-size: 1.6rem;
+  }
+
+  .radar-container svg {
+    max-width: 280px;
+  }
+
+  .tier-item {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  .tier-count {
+    text-align: left;
+  }
+}

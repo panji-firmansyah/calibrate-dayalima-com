@@ -124,10 +124,51 @@ function doPost(e) {
 // Fungsi ini cuma untuk verifikasi bahwa webhook sudah aktif.
 //
 function doGet(e) {
-  return ContentService
-    .createTextOutput(JSON.stringify({
-      status: "active",
-      message: "GT Form-to-Sheets webhook is running"
-    }))
-    .setMimeType(ContentService.MimeType.JSON);
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var lastRow = sheet.getLastRow();
+    var lastCol = sheet.getLastColumn();
+
+    // Kalau sheet kosong atau cuma header, return array kosong
+    if (lastRow <= 1) {
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          status: "success",
+          count: 0,
+          data: []
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // Ambil header dari baris pertama
+    var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+
+    // Ambil semua data (skip header)
+    var dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
+
+    // Map setiap row jadi object dengan key dari header
+    var results = dataRange.map(function(row) {
+      var obj = {};
+      headers.forEach(function(header, i) {
+        obj[header] = row[i];
+      });
+      return obj;
+    });
+
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: "success",
+        count: results.length,
+        data: results
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: "error",
+        message: error.message
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }

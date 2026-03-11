@@ -12,7 +12,7 @@
 // ============================================================
 
 // TODO: Ganti dengan URL webhook dari Google Apps Script deployment
-const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzirQUg8c-2Eqd_SBQsmRrGpk9_2sNFK_T2DjhomhasSMuU-dgSvCqQ5NH0glET5XjJdw/exec";
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwyzyFTyd3aqtQ-ft0z95Y96uEtRSZZlZO41HT-WOIKlCoZ7PUl8E9TeA-PIoWzR1uJZw/exec";
 
 // Nama field diagnostik sesuai urutan pertanyaan
 const QUESTION_FIELDS = ["q1_hiring", "q2_activation", "q3_succession", "q4_data", "q5_integration"];

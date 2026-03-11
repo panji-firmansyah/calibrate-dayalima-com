@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CALIBRATE — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/form-styles.css">
+  <link rel="stylesheet" href="css/dashboard-styles.css">
+</head>
+<body>
+
+  <div class="panel-frame" style="max-width: 900px;">
+  <div class="dashboard-container">
+
+    <!-- ============================================================
+         HEADER
+         ============================================================ -->
+    <div class="dashboard-header">
+      <div class="dashboard-eyebrow">DAYA LIMA</div>
+      <h1 class="dashboard-title">CALIBRATE</h1>
+      <div class="dashboard-subtitle">Dashboard</div>
+      <div class="dashboard-meta" id="dashboard-meta"></div>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div id="dashboard-loading" class="dashboard-loading" style="display: none;">
+      <div class="loading-spinner"></div>
+      <p>Memuat data dari Google Sheets...</p>
+    </div>
+
+    <!-- ERROR STATE -->
+    <div id="dashboard-error" class="dashboard-error" style="display: none;">
+      <p></p>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="dashboard-empty" class="dashboard-empty" style="display: none;">
+      <p>Belum ada data responden.</p>
+    </div>
+
+    <!-- ============================================================
+         DASHBOARD CONTENT
+         ============================================================ -->
+    <div id="dashboard-content" style="display: none;">
+
+      <!-- STAT CARDS -->
+      <div class="stat-cards">
+        <div class="stat-card">
+          <span class="stat-label">Total Responden</span>
+          <span class="stat-value" id="stat-total">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Rata-rata Score</span>
+          <span class="stat-value" id="stat-avg-score">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Tier Rata-rata</span>
+          <span class="stat-value" id="stat-avg-tier" style="font-size: 1.25rem;">—</span>
+        </div>
+      </div>
+
+      <!-- RADAR CHART -->
+      <div class="dashboard-section">
+        <div class="section-title">Rata-rata Per Dimensi</div>
+        <div class="radar-container" id="radar-chart"></div>
+      </div>
+
+      <!-- DIMENSION BARS -->
+      <div class="dashboard-section">
+        <div class="section-title">Skor Per Dimensi</div>
+        <div class="dimension-list" id="dimension-bars"></div>
+      </div>
+
+      <!-- TIER DISTRIBUTION -->
+      <div class="dashboard-section">
+        <div class="section-title">Distribusi Tier</div>
+        <div class="tier-list" id="tier-distribution"></div>
+      </div>
+
+      <!-- EXPORT BUTTON -->
+      <div class="dashboard-actions">
+        <button id="btn-export-pdf" class="btn-export">DOWNLOAD PDF DASHBOARD</button>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="dashboard-footer">
+      <p>Daya Lima &middot; Calibrate Talent Diagnostic</p>
+    </div>
+
+  </div>
+  </div>
+
+  <!-- Background animation -->
+  <script src="js/galaxy-bg.js"></script>
+
+  <!-- PDF export dependencies (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Dashboard logic -->
+  <script src="js/dashboard.js"></script>
+
+</body>
+</html>
