@@ -1,3 +1,9 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/", "destination": "/events/calibrate", "permanent": false },
+    { "source": "/dashboard", "destination": "/events/calibrate/dashboard", "permanent": false },
+    { "source": "/report", "destination": "/events/calibrate/report", "permanent": false },
+    { "source": "/book-a-call", "destination": "/events/calibrate/book-a-call", "permanent": false }
+  ]
 }
