@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daya Lima — Event Hub</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+       Taste-skill: No pure black, desaturated accents, off-black base
+       ============================================================ */
+    :root {
+      --color-bg-primary: #0C0C0E;
+      --color-bg-elevated: #131316;
+      --color-bg-card: #18181C;
+      --color-text-primary: #F5F5F7;
+      --color-text-body: #A1A1AA;
+      --color-text-muted: #52525B;
+      --color-accent: #C41E3A;
+      --color-accent-hover: #D92B47;
+      --color-accent-glow: rgba(196, 30, 58, 0.08);
+      --color-accent-gold: #C9A84C;
+      --color-border: #27272A;
+      --color-border-hover: #3F3F46;
+      --color-success: #22C55E;
+      --color-success-bg: rgba(34, 197, 94, 0.08);
+      --color-draft: #52525B;
+      --color-draft-bg: rgba(82, 82, 91, 0.1);
+
+      /* Taste-skill: Ban Inter, use Outfit for premium sans */
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+      --duration-fast: 150ms;
+      --duration-normal: 300ms;
+      --duration-slow: 500ms;
+    }
+
+    /* Reset */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-text-body);
+      background-color: var(--color-bg-primary);
+      line-height: 1.6;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================================
+       SUBTLE MESH GRADIENT BACKGROUND
+       Taste-skill: Mesh gradient > flat color
+       ============================================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(196, 30, 58, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 90% 80%, rgba(201, 168, 76, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grain overlay — fixed, no repaint on scroll */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* ============================================================
+       LAYOUT
+       Taste-skill: Anti-center bias — left-aligned header
+       ============================================================ */
+    .hub-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 72px 32px 96px;
+    }
+
+    /* ============================================================
+       HEADER — Left-aligned, asymmetric
+       Taste-skill: DESIGN_VARIANCE 8 = no centered hero
+       ============================================================ */
+    .hub-header {
+      margin-bottom: 64px;
+      max-width: 520px;
+    }
+
+    .hub-brand {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--color-accent-gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeSlideUp 0.6s var(--ease-out-expo) 0.1s forwards;
+    }
+
+    .hub-title {
+      font-family: var(--font-sans);
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800;
+      color: var(--color-text-primary);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeSlideUp 0.6s var(--ease-out-expo) 0.2s forwards;
+    }
+
+    .hub-subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+      max-width: 40ch;
+      opacity: 0;
+      animation: fadeSlideUp 0.6s var(--ease-out-expo) 0.3s forwards;
+    }
+
+    .hub-rule {
+      width: 40px;
+      height: 2px;
+      background: var(--color-accent);
+      border: none;
+      border-radius: 1px;
+      margin-top: 28px;
+      opacity: 0;
+      animation: fadeSlideUp 0.6s var(--ease-out-expo) 0.4s forwards;
+    }
+
+    /* ============================================================
+       SECTION LABEL
+       ============================================================ */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeSlideUp 0.6s var(--ease-out-expo) 0.45s forwards;
+    }
+
+    /* ============================================================
+       CARD GRID
+       Taste-skill: Asymmetric grid — 7fr 5fr, NOT equal columns
+       ============================================================ */
+    .event-grid {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 20px;
+    }
+
+    /* ============================================================
+       EVENT CARD
+       Taste-skill: Spotlight border on hover, inner refraction,
+       tinted shadow, tactile :active feedback
+       ============================================================ */
+    .event-card {
+      position: relative;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      transition:
+        border-color var(--duration-normal) var(--ease-spring),
+        box-shadow var(--duration-slow) var(--ease-spring),
+        transform var(--duration-normal) var(--ease-spring);
+      /* Taste-skill: Staggered orchestration */
+      opacity: 0;
+      animation: fadeSlideUp 0.7s var(--ease-out-expo) forwards;
+    }
+
+    .event-card:nth-child(1) { animation-delay: 0.5s; }
+    .event-card:nth-child(2) { animation-delay: 0.65s; }
+
+    /* Taste-skill: Liquid glass inner refraction border */
+    .event-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      pointer-events: none;
+    }
+
+    .event-card:hover {
+      border-color: var(--color-border-hover);
+      /* Taste-skill: Tinted shadow, not generic glow */
+      box-shadow:
+        0 24px 48px -12px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(196, 30, 58, 0.06);
+      transform: translateY(-3px);
+    }
+
+    /* Taste-skill: Tactile :active feedback */
+    .event-card:active {
+      transform: translateY(0) scale(0.99);
+      transition-duration: 80ms;
+    }
+
+    .event-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .event-name {
+      font-family: var(--font-sans);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .event-tagline {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    .event-desc {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+      max-width: 50ch;
+      margin-bottom: 28px;
+    }
+
+    /* Status badge — Taste-skill: breathing pulse dot */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .badge-active {
+      color: var(--color-success);
+      background: var(--color-success-bg);
+    }
+
+    .badge-active::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-success);
+      /* Taste-skill: Breathing pulse micro-animation */
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    .badge-draft {
+      color: var(--color-draft);
+      background: var(--color-draft-bg);
+    }
+
+    /* Tools list */
+    .event-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 32px;
+    }
+
+    .tool-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-body);
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      transition: border-color var(--duration-fast) var(--ease-spring);
+    }
+
+    .tool-tag:hover {
+      border-color: var(--color-border-hover);
+    }
+
+    /* CTA — Taste-skill: Tactile, no outer glow */
+    .event-cta {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: var(--color-accent);
+      color: var(--color-text-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 10px;
+      align-self: flex-start;
+      transition:
+        background var(--duration-normal) var(--ease-spring),
+        transform var(--duration-fast) var(--ease-spring);
+    }
+
+    .event-cta:hover {
+      background: var(--color-accent-hover);
+    }
+
+    .event-cta:active {
+      transform: scale(0.97) translateY(1px);
+    }
+
+    .event-cta svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      transition: transform var(--duration-normal) var(--ease-spring);
+    }
+
+    .event-cta:hover svg {
+      transform: translateX(2px);
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .hub-footer {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--color-border);
+      opacity: 0;
+      animation: fadeSlideUp 0.6s var(--ease-out-expo) 0.8s forwards;
+    }
+
+    .hub-footer p {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      letter-spacing: 0.3px;
+    }
+
+    /* ============================================================
+       ANIMATIONS
+       Taste-skill: Staggered orchestration via CSS cascade
+       ============================================================ */
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       Taste-skill: Aggressive mobile collapse to single column
+       ============================================================ */
+    @media (max-width: 768px) {
+      .hub-container { padding: 48px 20px 72px; }
+      .hub-header { margin-bottom: 48px; }
+      .event-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .event-card { padding: 28px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .hub-container { padding: 36px 16px 60px; }
+      .hub-title { letter-spacing: -0.02em; }
+      .event-name { font-size: 19px; }
+      .event-card { border-radius: 16px; padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hub-container">
+
+    <!-- ============================================================
+         HEADER — Left-aligned, asymmetric (DESIGN_VARIANCE: 8)
+         ============================================================ -->
+    <header class="hub-header">
+      <div class="hub-brand">Daya Lima</div>
+      <h1 class="hub-title">Event Hub</h1>
+      <p class="hub-subtitle">Pusat kontrol tools untuk offline marketing events.</p>
+      <hr class="hub-rule">
+    </header>
+
+    <!-- ============================================================
+         EVENT GRID — Asymmetric 7:5 ratio
+         ============================================================ -->
+    <div class="section-label">Active Events</div>
+    <div class="event-grid">
+
+      <!-- CALIBRATE -->
+      <article class="event-card">
+        <div class="event-card-header">
+          <div>
+            <h2 class="event-name">Calibrate</h2>
+            <div class="event-tagline">Talent Diagnostic</div>
+          </div>
+          <span class="badge badge-active">Active</span>
+        </div>
+        <p class="event-desc">
+          Assessment kesiapan talent management — hiring, onboarding, suksesi, dan data-driven decisions. 5 pertanyaan, hasil ke personalized scorecard.
+        </p>
+        <div class="event-tools">
+          <span class="tool-tag">Diagnostic Form</span>
+          <span class="tool-tag">Dashboard</span>
+          <span class="tool-tag">Report</span>
+          <span class="tool-tag">Book a Call</span>
+        </div>
+        <a href="/events/calibrate/" class="event-cta">
+          Buka Tools
+          <svg viewBox="0 0 16 16"><path d="M6.47 4.29a.75.75 0 011.06 0l3.25 3.25a.75.75 0 010 1.06l-3.25 3.25a.75.75 0 01-1.06-1.06L9.19 8.06 6.47 5.35a.75.75 0 010-1.06z"/></svg>
+        </a>
+      </article>
+
+      <!-- EXEC BREAKFAST -->
+      <article class="event-card">
+        <div class="event-card-header">
+          <div>
+            <h2 class="event-name">Executive Breakfast</h2>
+            <div class="event-tagline">Leadership Pulse</div>
+          </div>
+          <span class="badge badge-active">Active</span>
+        </div>
+        <p class="event-desc">
+          Quick-pulse assessment untuk leadership readiness di executive breakfast events.
+        </p>
+        <div class="event-tools">
+          <span class="tool-tag">Assessment Form</span>
+        </div>
+        <a href="/events/exec-breakfast/" class="event-cta">
+          Buka Tools
+          <svg viewBox="0 0 16 16"><path d="M6.47 4.29a.75.75 0 011.06 0l3.25 3.25a.75.75 0 010 1.06l-3.25 3.25a.75.75 0 01-1.06-1.06L9.19 8.06 6.47 5.35a.75.75 0 010-1.06z"/></svg>
+        </a>
+      </article>
+
+    </div>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="hub-footer">
+      <p>Daya Lima Group &mdash; Internal Event Tools</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
