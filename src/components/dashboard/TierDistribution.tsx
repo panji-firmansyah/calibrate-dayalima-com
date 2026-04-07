@@ -26,9 +26,9 @@ export default function TierDistribution({ distribution }: Props) {
               {count} ({percent}%)
             </span>
           </div>
-          <div className="h-3 rounded-full bg-neutral-100 overflow-hidden">
+          <div className="h-3 rounded bg-neutral-100 overflow-hidden">
             <div
-              className="h-full rounded-full transition-all duration-700 ease-out"
+              className="h-full rounded transition-all duration-700 ease-out"
               style={{ width: `${percent}%`, backgroundColor: tier.color }}
             />
           </div>

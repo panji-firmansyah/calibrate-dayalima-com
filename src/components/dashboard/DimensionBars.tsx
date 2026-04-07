@@ -40,9 +40,9 @@ export default function DimensionBars({ dimensions }: Props) {
                 {dim.score.toFixed(1)} / {dim.scaleMax}
               </span>
             </div>
-            <div className="h-3 rounded-full bg-neutral-100 overflow-hidden">
+            <div className="h-3 rounded bg-neutral-100 overflow-hidden">
               <div
-                className="h-full rounded-full transition-all duration-700 ease-out"
+                className="h-full rounded transition-all duration-700 ease-out"
                 style={{ width: `${pct}%`, backgroundColor: color }}
               />
             </div>

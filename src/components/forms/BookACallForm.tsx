@@ -96,7 +96,7 @@ export default function BookACallForm({ slug }: Props) {
             type={field.type}
             required={field.required}
             autoComplete={field.autoComplete}
-            className="w-full h-11 rounded-md border border-border bg-white px-3 text-sm text-text-primary placeholder:text-text-placeholder focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none transition-colors"
+            className="w-full h-11 rounded-md border border-border bg-white px-4 text-sm text-text-primary placeholder:text-text-placeholder focus:border-brand focus:ring-[3px] focus:ring-brand/15 focus:outline-none transition-colors"
           />
         </div>
       ))}
@@ -112,7 +112,7 @@ export default function BookACallForm({ slug }: Props) {
           id="topik"
           name="topik"
           type="text"
-          className="w-full h-11 rounded-md border border-border bg-white px-3 text-sm text-text-primary placeholder:text-text-placeholder focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none transition-colors"
+          className="w-full h-11 rounded-md border border-border bg-white px-4 text-sm text-text-primary placeholder:text-text-placeholder focus:border-brand focus:ring-[3px] focus:ring-brand/15 focus:outline-none transition-colors"
         />
       </div>
 
@@ -127,7 +127,7 @@ export default function BookACallForm({ slug }: Props) {
           id="pesan"
           name="pesan"
           rows={3}
-          className="w-full rounded-md border border-border bg-white px-3 py-2.5 text-sm text-text-primary placeholder:text-text-placeholder focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none transition-colors resize-none"
+          className="w-full rounded-md border border-border bg-white px-3 py-2.5 text-sm text-text-primary placeholder:text-text-placeholder focus:border-brand focus:ring-[3px] focus:ring-brand/15 focus:outline-none transition-colors resize-none"
         />
       </div>
 
@@ -138,7 +138,7 @@ export default function BookACallForm({ slug }: Props) {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full h-12 rounded-md bg-brand text-white text-sm font-medium hover:bg-brand-hover disabled:opacity-60 disabled:cursor-not-allowed transition-colors cursor-pointer"
+        className="w-full h-12 rounded-md bg-brand text-white text-sm font-medium hover:bg-brand-hover disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed disabled:shadow-none transition-colors cursor-pointer"
       >
         {status === "loading" ? "Mengirim..." : "Book a Call"}
       </button>

@@ -63,7 +63,7 @@ function Card({
 
   return (
     <div
-      className={`rounded-lg border p-4 text-center ${borderClass}`}
+      className={`rounded-lg border p-5 text-center ${borderClass}`}
       style={{ boxShadow: "var(--shadow-sm)" }}
     >
       <div
