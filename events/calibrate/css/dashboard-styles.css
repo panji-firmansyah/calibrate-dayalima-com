@@ -1,5 +1,6 @@
 /*
  * Calibrate Dashboard — Admin Styles
+ * DLG L1 Design System — Light theme
  *
  * Optimized untuk presentasi layar besar (TV/projector)
  * Angka besar, kontras tinggi, terbaca dari jauh
@@ -9,47 +10,17 @@
    DASHBOARD LAYOUT — Full wide screen
    ============================================================ */
 .dashboard-frame {
-  max-width: 1400px;
+  max-width: 1280px;
+  border: none;
+  box-shadow: none;
+  background: transparent;
 }
 
 .dashboard-container {
-  max-width: 1400px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: var(--space-10) var(--space-12);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Glassmorphism inner */
-.dashboard-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 10, 10, 0.52);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  z-index: 0;
-}
-
-/* Scanline overlay */
-.dashboard-container::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 3px,
-    rgba(0, 0, 0, 0.04) 3px,
-    rgba(0, 0, 0, 0.04) 4px
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-.dashboard-container > * {
-  position: relative;
-  z-index: 1;
+  background: var(--color-bg-elevated);
 }
 
 /* ============================================================
@@ -80,36 +51,35 @@
   font-family: var(--font-sans);
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--color-text-muted);
-  letter-spacing: 0.3em;
+  color: var(--color-accent);
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: var(--space-2);
 }
 
 .dashboard-title {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 3rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 2.25rem;
   color: var(--color-text-primary);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  line-height: 1;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
   margin-bottom: var(--space-1);
 }
 
 .dashboard-subtitle {
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-accent);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-bottom: var(--space-3);
 }
 
 .dashboard-meta {
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 
 /* ============================================================
@@ -130,7 +100,7 @@
   display: inline-block;
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(196, 30, 58, 0.2);
+  border: 3px solid rgba(220, 38, 38, 0.15);
   border-top-color: var(--color-accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -164,54 +134,54 @@
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--border-radius);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   padding: var(--space-6) var(--space-4);
   text-align: center;
 }
 
 .stat-value {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 3.5rem;
-  font-weight: 900;
+  font-weight: 800;
   color: var(--color-text-primary);
   line-height: 1;
   margin-bottom: var(--space-2);
 }
 
 .stat-label {
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--color-text-muted);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 /* Highlight cards */
 .stat-card--strong {
-  border-color: rgba(22, 163, 74, 0.35);
-  background: rgba(22, 163, 74, 0.06);
+  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.04);
 }
 
 .stat-card--strong .stat-value {
-  color: #16A34A;
+  color: #15803D;
   font-size: 1.5rem;
   font-family: var(--font-sans);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.3;
 }
 
 .stat-card--weak {
-  border-color: rgba(196, 30, 58, 0.35);
-  background: rgba(196, 30, 58, 0.06);
+  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(220, 38, 38, 0.04);
 }
 
 .stat-card--weak .stat-value {
-  color: #C41E3A;
+  color: #DC2626;
   font-size: 1.5rem;
   font-family: var(--font-sans);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.3;
 }
 
@@ -221,7 +191,7 @@
 .dashboard-section {
   margin-bottom: var(--space-8);
   padding-bottom: var(--space-8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .dashboard-section:last-of-type {
@@ -231,10 +201,10 @@
 }
 
 .section-title {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--color-text-muted);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-bottom: var(--space-6);
   text-align: center;
@@ -282,22 +252,22 @@
 
 .dimension-name {
   font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-text-body);
+  font-weight: 600;
+  color: var(--color-text-primary);
   letter-spacing: 0.02em;
 }
 
 .dimension-score {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 900;
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--color-text-primary);
 }
 
 .dimension-bar-track {
   width: 100%;
   height: 16px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--color-bg-tertiary, #F5F5F4);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -305,7 +275,7 @@
 .dimension-bar-fill {
   height: 100%;
   border-radius: 8px;
-  transition: width 0.8s var(--ease-decisive);
+  transition: width 0.8s var(--ease-default);
   width: 0;
 }
 
@@ -333,13 +303,13 @@
 
 .tier-label {
   font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-text-body);
+  font-weight: 600;
+  color: var(--color-text-primary);
 }
 
 .tier-bar-track {
   height: 36px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--color-bg-tertiary, #F5F5F4);
   border-radius: 6px;
   overflow: hidden;
 }
@@ -347,7 +317,7 @@
 .tier-bar-fill {
   height: 100%;
   border-radius: 6px;
-  transition: width 0.8s var(--ease-decisive);
+  transition: width 0.8s var(--ease-default);
   display: flex;
   align-items: center;
   padding-left: var(--space-3);
@@ -357,8 +327,8 @@
 
 .tier-count {
   font-size: 1rem;
-  font-weight: 800;
-  color: var(--color-text-body);
+  font-weight: 700;
+  color: var(--color-text-secondary, #57534E);
   white-space: nowrap;
   min-width: 80px;
   text-align: right;
@@ -381,8 +351,8 @@
 
 .breakdown-label {
   font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-text-body);
+  font-weight: 600;
+  color: var(--color-text-primary);
   letter-spacing: 0.02em;
 }
 
@@ -400,20 +370,20 @@
   align-items: center;
   justify-content: center;
   font-size: 0.85rem;
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.95);
-  transition: width 0.8s var(--ease-decisive);
+  font-weight: 700;
+  color: #FFFFFF;
+  transition: width 0.8s var(--ease-default);
   width: 0;
   min-width: 0;
   overflow: hidden;
 }
 
-/* Warna per skor 1-5 */
-.breakdown-segment[data-score="1"] { background: #C41E3A; }
-.breakdown-segment[data-score="2"] { background: #D4614E; }
-.breakdown-segment[data-score="3"] { background: #C9A84C; }
-.breakdown-segment[data-score="4"] { background: #6DAF5C; }
-.breakdown-segment[data-score="5"] { background: #16A34A; }
+/* Warna per skor 1-5 — DLG data viz palette */
+.breakdown-segment[data-score="1"] { background: #991B1B; }
+.breakdown-segment[data-score="2"] { background: #DC2626; }
+.breakdown-segment[data-score="3"] { background: #F59E0B; }
+.breakdown-segment[data-score="4"] { background: #3B82F6; }
+.breakdown-segment[data-score="5"] { background: #22C55E; }
 
 .breakdown-legend {
   display: flex;
@@ -427,7 +397,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-text-muted);
 }
 
@@ -448,24 +418,22 @@
 
 .btn-export {
   display: inline-block;
-  padding: var(--space-4) var(--space-10);
-  min-height: 56px;
-  border: 1.5px solid var(--color-accent-gold);
-  border-radius: var(--border-radius);
-  background: rgba(201, 168, 76, 0.1);
-  color: var(--color-accent-gold);
+  padding: var(--space-3) var(--space-8);
+  min-height: 44px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: #FFFFFF;
   font-family: var(--font-sans);
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-default);
 }
 
 .btn-export:hover {
-  background: rgba(201, 168, 76, 0.2);
-  box-shadow: 0 0 16px rgba(201, 168, 76, 0.15);
+  background: var(--color-accent-hover, #B91C1C);
+  box-shadow: 0 4px 14px 0 rgba(220, 38, 38, 0.25);
 }
 
 .btn-export:active {
@@ -473,9 +441,11 @@
 }
 
 .btn-export:disabled {
-  opacity: 0.5;
+  background: #F5F5F4;
+  color: #A8A29E;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 /* ============================================================
@@ -485,13 +455,13 @@
   text-align: center;
   margin-top: var(--space-8);
   padding-top: var(--space-6);
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid var(--color-border);
 }
 
 .dashboard-footer p {
   font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-text-muted);
   line-height: 1.8;
@@ -501,21 +471,11 @@
    PDF CAPTURE — Override untuk html2canvas
    ============================================================ */
 .pdf-capture {
-  background: #0A0A0A !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background: #FFFFFF !important;
 }
 
-.pdf-capture::before {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  background: #0A0A0A !important;
-}
-
-.pdf-capture .dashboard-container::before {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  background: #0A0A0A !important;
+.pdf-capture .dashboard-container {
+  background: #FFFFFF !important;
 }
 
 /* ============================================================
@@ -561,7 +521,7 @@
   }
 
   .dashboard-title {
-    font-size: 2rem;
+    font-size: 1.875rem;
   }
 
   .radar-container svg {

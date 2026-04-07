@@ -73,8 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
           "success",
           '<div class="confirm-icon">' +
             '<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-            '<circle cx="22" cy="22" r="21" stroke="rgba(196,30,58,0.45)" stroke-width="1"/>' +
-            '<path d="M14 22l6 6 10-12" stroke="#C41E3A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+            '<circle cx="22" cy="22" r="21" stroke="rgba(220,38,38,0.45)" stroke-width="1"/>' +
+            '<path d="M14 22l6 6 10-12" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
             "</svg>" +
           "</div>" +
           '<div class="confirm-eyebrow">Calibrate — Book a Call</div>' +
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Submit error:", error);
         showMessage("error", "Maaf, terjadi kesalahan. Silakan coba lagi.");
         submitBtn.disabled = false;
-        submitBtn.textContent = "BOOK A CALL";
+        submitBtn.textContent = "Book a Call";
       });
   });
 });

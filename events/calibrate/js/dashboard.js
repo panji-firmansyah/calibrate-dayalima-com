@@ -21,10 +21,10 @@ var DIMENSIONS = [
 
 // Konfigurasi tier berdasarkan total score (5-25)
 var TIERS = [
-  { min: 5, max: 10, label: "Fragmentaris", color: "#C41E3A" },
-  { min: 11, max: 15, label: "Berkembang", color: "#C9A84C" },
-  { min: 16, max: 20, label: "Terstruktur", color: "#4CAF50" },
-  { min: 21, max: 25, label: "Terintegrasi", color: "#16A34A" },
+  { min: 5, max: 10, label: "Fragmentaris", color: "#DC2626" },
+  { min: 11, max: 15, label: "Berkembang", color: "#F59E0B" },
+  { min: 16, max: 20, label: "Terstruktur", color: "#3B82F6" },
+  { min: 21, max: 25, label: "Terintegrasi", color: "#22C55E" },
 ];
 
 // ============================================================
@@ -263,7 +263,7 @@ function renderRadarChart(averages) {
 
     svgParts.push(
       '<polygon points="' + points + '" ' +
-      'fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>'
+      'fill="none" stroke="rgba(28,25,23,0.08)" stroke-width="1"/>'
     );
   }
 
@@ -274,7 +274,7 @@ function renderRadarChart(averages) {
     svgParts.push(
       '<line x1="' + cx + '" y1="' + cy + '" ' +
       'x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" ' +
-      'stroke="rgba(255,255,255,0.07)" stroke-width="1"/>'
+      'stroke="rgba(28,25,23,0.08)" stroke-width="1"/>'
     );
   });
 
@@ -292,14 +292,14 @@ function renderRadarChart(averages) {
   // Glow layer
   svgParts.push(
     '<polygon points="' + scorePoints + '" ' +
-    'fill="rgba(196,30,58,0.12)" stroke="rgba(196,30,58,0.4)" stroke-width="4" ' +
+    'fill="rgba(220,38,38,0.10)" stroke="rgba(220,38,38,0.35)" stroke-width="4" ' +
     'filter="url(#glow)"/>'
   );
 
   // Main polygon
   svgParts.push(
     '<polygon points="' + scorePoints + '" ' +
-    'fill="rgba(196,30,58,0.22)" stroke="#C41E3A" stroke-width="2"/>'
+    'fill="rgba(220,38,38,0.18)" stroke="#DC2626" stroke-width="2"/>'
   );
 
   // SVG filter for glow
@@ -317,7 +317,7 @@ function renderRadarChart(averages) {
     var y = cy + r * Math.sin(axis.angle);
     svgParts.push(
       '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" ' +
-      'r="5" fill="#C41E3A" stroke="#0A0A0A" stroke-width="2"/>'
+      'r="5" fill="#DC2626" stroke="#FFFFFF" stroke-width="2"/>'
     );
   });
 
@@ -339,7 +339,7 @@ function renderRadarChart(averages) {
     svgParts.push(
       '<text x="' + x.toFixed(1) + '" y="' + (y + yOffset).toFixed(1) + '" ' +
       'text-anchor="' + anchor + '" ' +
-      'fill="#E0E0E0" font-size="14" font-weight="700">' +
+      'fill="#292524" font-size="14" font-weight="700">' +
       axis.label +
       "</text>"
     );
@@ -347,7 +347,7 @@ function renderRadarChart(averages) {
     svgParts.push(
       '<text x="' + x.toFixed(1) + '" y="' + (y + yOffset + 16).toFixed(1) + '" ' +
       'text-anchor="' + anchor + '" ' +
-      'fill="#C41E3A" font-size="16" font-weight="900">' +
+      'fill="#DC2626" font-size="16" font-weight="800">' +
       score.toFixed(1) +
       "</text>"
     );
@@ -370,9 +370,9 @@ function renderDimensionBars(averages) {
     var insight = getDimensionInsight(score);
 
     var color;
-    if (score < 2.5) color = "#C41E3A";
-    else if (score < 3.5) color = "#C9A84C";
-    else color = "#4CAF50";
+    if (score < 2.5) color = "#DC2626";
+    else if (score < 3.5) color = "#F59E0B";
+    else color = "#22C55E";
 
     html +=
       '<div class="dimension-item">' +
@@ -459,7 +459,7 @@ function renderDimensionBreakdown(data) {
 
   // Legend
   html += '<div class="breakdown-legend">';
-  var legendColors = ["#C41E3A", "#D4614E", "#C9A84C", "#6DAF5C", "#16A34A"];
+  var legendColors = ["#991B1B", "#DC2626", "#F59E0B", "#3B82F6", "#22C55E"];
   for (var s = 1; s <= 5; s++) {
     html +=
       '<div class="legend-item">' +
@@ -513,7 +513,7 @@ function animateBars() {
 function exportToPDF() {
   var btn = document.getElementById("btn-export-pdf");
   btn.disabled = true;
-  btn.textContent = "GENERATING PDF...";
+  btn.textContent = "Generating PDF...";
 
   var dashboardEl = document.querySelector(".panel-frame");
 
@@ -522,7 +522,7 @@ function exportToPDF() {
 
   html2canvas(dashboardEl, {
     scale: 2,
-    backgroundColor: "#0A0A0A",
+    backgroundColor: "#FFFFFF",
     useCORS: true,
     logging: false,
   })
@@ -560,13 +560,13 @@ function exportToPDF() {
 
       dashboardEl.classList.remove("pdf-capture");
       btn.disabled = false;
-      btn.textContent = "DOWNLOAD PDF DASHBOARD";
+      btn.textContent = "Download PDF Dashboard";
     })
     .catch(function (error) {
       console.error("PDF export error:", error);
       dashboardEl.classList.remove("pdf-capture");
       btn.disabled = false;
-      btn.textContent = "DOWNLOAD PDF DASHBOARD";
+      btn.textContent = "Download PDF Dashboard";
       alert("Gagal generate PDF. Silakan coba lagi.");
     });
 }
