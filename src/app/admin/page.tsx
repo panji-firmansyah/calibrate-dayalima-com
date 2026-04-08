@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAllEvents } from "@/config/events";
-import { BarChart3, FileText, LogOut } from "lucide-react";
+import { BarChart3, FileText, Table2 } from "lucide-react";
 import type { Metadata } from "next";
 import LogoutButton from "./LogoutButton";
 
@@ -10,9 +10,7 @@ export const metadata: Metadata = {
 
 export default function AdminPage() {
   const events = getAllEvents();
-  const eventsWithFeatures = events.filter(
-    ([, e]) => e.features.dashboard || e.features.report
-  );
+  const eventsWithFeatures = events;
 
   return (
     <main className="flex-1 flex items-start justify-center px-4 py-8 sm:py-12">
@@ -59,10 +57,17 @@ export default function AdminPage() {
               </p>
 
               <div className="flex flex-wrap gap-2">
+                <Link
+                  href={`/admin/${slug}/submissions`}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-brand text-white text-sm font-medium hover:bg-brand-hover transition-colors"
+                >
+                  <Table2 size={15} />
+                  Data Submissions
+                </Link>
                 {event.features.dashboard && (
                   <Link
                     href={`/${slug}/dashboard`}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-brand text-white text-sm font-medium hover:bg-brand-hover transition-colors"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md border border-border text-sm font-medium text-text-secondary hover:border-border-hover hover:text-text-primary transition-colors"
                   >
                     <BarChart3 size={15} />
                     Dashboard
