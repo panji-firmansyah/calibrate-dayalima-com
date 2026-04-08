@@ -14,7 +14,7 @@ export default function RadarChart({ axes }: Props) {
   const size = 480;
   const cx = size / 2;
   const cy = size / 2;
-  const radius = 170;
+  const radius = 160;
   const levels = 5;
 
   const axisData = axes.map((a, i) => ({
@@ -22,29 +22,77 @@ export default function RadarChart({ axes }: Props) {
     angle: -Math.PI / 2 + ((2 * Math.PI) / axes.length) * i,
   }));
 
-  // Grid pentagons
-  const grids = Array.from({ length: levels }, (_, level) => {
-    const r = (radius * (level + 1)) / levels;
-    const points = axisData
-      .map((a) => `${(cx + r * Math.cos(a.angle)).toFixed(1)},${(cy + r * Math.sin(a.angle)).toFixed(1)}`)
+  function polyPoints(r: number) {
+    return axisData
+      .map(
+        (a) =>
+          `${(cx + r * Math.cos(a.angle)).toFixed(1)},${(cy + r * Math.sin(a.angle)).toFixed(1)}`
+      )
       .join(" ");
-    return <polygon key={level} points={points} fill="none" stroke="rgba(28,25,23,0.08)" strokeWidth={1} />;
+  }
+
+  // Alternating filled bands (target-ring effect)
+  const bands = Array.from({ length: levels }, (_, level) => {
+    const outerR = (radius * (level + 1)) / levels;
+    const fill = level % 2 === 0 ? "rgba(250,250,249,1)" : "rgba(245,245,244,1)";
+    return (
+      <polygon
+        key={`band-${level}`}
+        points={polyPoints(outerR)}
+        fill={fill}
+        stroke="none"
+      />
+    );
+  }).reverse(); // render outer first so inner overlays
+
+  // Grid lines (subtle)
+  const gridLines = Array.from({ length: levels }, (_, level) => {
+    const r = (radius * (level + 1)) / levels;
+    return (
+      <polygon
+        key={`grid-${level}`}
+        points={polyPoints(r)}
+        fill="none"
+        stroke="rgba(231,229,228,0.6)"
+        strokeWidth={1}
+      />
+    );
   });
 
-  // Axis lines
-  const axisLines = axisData.map((a) => (
+  // Axis spokes
+  const spokes = axisData.map((a) => (
     <line
-      key={a.key}
+      key={`spoke-${a.key}`}
       x1={cx}
       y1={cy}
       x2={cx + radius * Math.cos(a.angle)}
       y2={cy + radius * Math.sin(a.angle)}
-      stroke="rgba(28,25,23,0.08)"
+      stroke="rgba(231,229,228,0.6)"
       strokeWidth={1}
     />
   ));
 
-  // Score polygon
+  // Level labels (1-5) along the top axis
+  const levelLabels = Array.from({ length: levels }, (_, level) => {
+    const r = (radius * (level + 1)) / levels;
+    const topAxis = axisData[0]; // top axis (-PI/2)
+    const x = cx + r * Math.cos(topAxis.angle) + 8;
+    const y = cy + r * Math.sin(topAxis.angle) + 4;
+    return (
+      <text
+        key={`lvl-${level}`}
+        x={x}
+        y={y}
+        fill="#A8A29E"
+        fontSize={9}
+        fontWeight={500}
+      >
+        {level + 1}
+      </text>
+    );
+  });
+
+  // Score polygon points
   const scorePoints = axisData
     .map((a) => {
       const r = (radius * a.score) / 5;
@@ -52,25 +100,19 @@ export default function RadarChart({ axes }: Props) {
     })
     .join(" ");
 
-  // Score dots
-  const dots = axisData.map((a) => {
+  // Data point coordinates
+  const dataPoints = axisData.map((a) => {
     const r = (radius * a.score) / 5;
-    return (
-      <circle
-        key={a.key}
-        cx={cx + r * Math.cos(a.angle)}
-        cy={cy + r * Math.sin(a.angle)}
-        r={5}
-        fill="#DC2626"
-        stroke="#FFFFFF"
-        strokeWidth={2}
-      />
-    );
+    return {
+      key: a.key,
+      x: cx + r * Math.cos(a.angle),
+      y: cy + r * Math.sin(a.angle),
+    };
   });
 
-  // Labels
+  // Labels with score badges
   const labels = axisData.map((a) => {
-    const labelR = radius + 35;
+    const labelR = radius + 42;
     const x = cx + labelR * Math.cos(a.angle);
     const y = cy + labelR * Math.sin(a.angle);
 
@@ -79,18 +121,19 @@ export default function RadarChart({ axes }: Props) {
     if (Math.cos(a.angle) < -0.3) anchor = "end";
 
     let yOffset = 0;
-    if (Math.sin(a.angle) < -0.3) yOffset = -6;
-    if (Math.sin(a.angle) > 0.3) yOffset = 14;
+    if (Math.sin(a.angle) < -0.3) yOffset = -8;
+    if (Math.sin(a.angle) > 0.3) yOffset = 16;
 
     return (
-      <g key={a.key}>
+      <g key={`label-${a.key}`}>
         <text
           x={x}
           y={y + yOffset}
           textAnchor={anchor}
-          fill="#292524"
-          fontSize={14}
-          fontWeight={700}
+          fill="#44403C"
+          fontSize={12}
+          fontWeight={600}
+          letterSpacing="0.01em"
         >
           {a.label}
         </text>
@@ -99,7 +142,7 @@ export default function RadarChart({ axes }: Props) {
           y={y + yOffset + 16}
           textAnchor={anchor}
           fill="#DC2626"
-          fontSize={16}
+          fontSize={15}
           fontWeight={800}
         >
           {a.score.toFixed(1)}
@@ -109,33 +152,84 @@ export default function RadarChart({ axes }: Props) {
   });
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full">
       <svg viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="4" result="blur" />
+          {/* Gradient fill for score area */}
+          <radialGradient id="scoreGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(220,38,38,0.28)" />
+            <stop offset="100%" stopColor="rgba(220,38,38,0.08)" />
+          </radialGradient>
+          {/* Glow filter */}
+          <filter id="scoreGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          {/* Dot glow */}
+          <filter id="dotGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" />
+          </filter>
         </defs>
-        {grids}
-        {axisLines}
+
+        {/* Filled bands (target rings) */}
+        {bands}
+
+        {/* Grid lines */}
+        {gridLines}
+
+        {/* Axis spokes */}
+        {spokes}
+
+        {/* Level labels */}
+        {levelLabels}
+
+        {/* Score area — glow layer */}
         <polygon
           points={scorePoints}
-          fill="rgba(220,38,38,0.10)"
-          stroke="rgba(220,38,38,0.35)"
-          strokeWidth={4}
-          filter="url(#glow)"
+          fill="none"
+          stroke="rgba(220,38,38,0.2)"
+          strokeWidth={8}
+          filter="url(#scoreGlow)"
         />
+
+        {/* Score area — gradient fill */}
         <polygon
           points={scorePoints}
-          fill="rgba(220,38,38,0.18)"
+          fill="url(#scoreGradient)"
           stroke="#DC2626"
-          strokeWidth={2}
+          strokeWidth={2.5}
+          strokeLinejoin="round"
         />
-        {dots}
+
+        {/* Data point glow */}
+        {dataPoints.map((p) => (
+          <circle
+            key={`glow-${p.key}`}
+            cx={p.x}
+            cy={p.y}
+            r={8}
+            fill="rgba(220,38,38,0.2)"
+            filter="url(#dotGlow)"
+          />
+        ))}
+
+        {/* Data points */}
+        {dataPoints.map((p) => (
+          <circle
+            key={`dot-${p.key}`}
+            cx={p.x}
+            cy={p.y}
+            r={5}
+            fill="#DC2626"
+            stroke="#FFFFFF"
+            strokeWidth={2.5}
+          />
+        ))}
+
+        {/* Labels + scores */}
         {labels}
       </svg>
     </div>
