@@ -181,6 +181,123 @@ export const EVENTS: Record<string, EventConfig> = {
       { name: "Terintegrasi", min: 21, max: 25, color: "#22C55E" },
     ],
     dashboardLayout: "pulse-check",
+    quiz: {
+      title: "GENERASI MANA?",
+      subtitle: "Prejudice Quiz",
+      choices: [
+        "Baby Boomers (1946–1964)",
+        "Gen X (1965–1980)",
+        "Millennials (1981–1996)",
+        "Gen Z (1997–2012)",
+      ],
+      questions: [
+        {
+          id: 1,
+          stereotype:
+            "Tidak loyal — sering pindah-pindah kerja.",
+          commonBias: "Gen Z / Millennials",
+          reveal:
+            "Semua generasi pindah kerja di usia 20-an dengan frekuensi yang serupa. Rata-rata tenure pekerja muda konsisten lintas generasi — ini soal tahap karir, bukan karakter generasi.",
+          source:
+            'Bureau of Labor Statistics; McKinsey "Gen What?" (2023)',
+        },
+        {
+          id: 2,
+          stereotype:
+            "Gagap teknologi — susah adaptasi digital.",
+          commonBias: "Baby Boomers",
+          reveal:
+            "Baby Boomers dan Gen X aktif belajar teknologi baru. Senior business leaders justru menghabiskan lebih banyak waktu mempelajari emerging technology dibanding yang lebih junior.",
+          source: "McKinsey Digital (2023)",
+        },
+        {
+          id: 3,
+          stereotype: "Malas — kurang motivasi kerja.",
+          commonBias: "Gen Z",
+          reveal:
+            "49% Gen Z menganggap pekerjaan vital bagi identitas mereka. 62% Millennials menganggap kerja lebih penting dari hobi, musik, bahkan olahraga. Work ethic serupa di semua generasi.",
+          source:
+            "Deloitte Gen Z and Millennials Survey (2023)",
+        },
+        {
+          id: 4,
+          stereotype:
+            "Terlalu sensitif — gampang baper di tempat kerja.",
+          commonBias: "Millennials / Gen Z",
+          reveal:
+            'Yang sering disebut "baper" sebenarnya adalah boundary-setting — kemampuan menetapkan batasan. Riset menunjukkan ini justru meningkatkan produktivitas dan mencegah burnout, bukan tanda kelemahan.',
+          source: "Harvard Business Review (2022)",
+        },
+        {
+          id: 5,
+          stereotype:
+            "Kerja cuma untuk uang — materialistis.",
+          commonBias: "Gen Z",
+          reveal:
+            "Kebalikannya: Gen Z justru generasi yang paling sedikit memprioritaskan kompensasi sebagai alasan bertahan di perusahaan. Semakin tua, semakin tinggi prioritas terhadap gaji.",
+          source:
+            'McKinsey "Gen What? Debunking Age-Based Myths" (2023)',
+        },
+        {
+          id: 6,
+          stereotype:
+            "Tidak mau berubah — kaku dan kolot.",
+          commonBias: "Baby Boomers / Gen X",
+          reveal:
+            "Resistance to change bukan soal generasi — ini soal personality, konteks organisasi, dan seberapa baik perubahan dikomunikasikan. Meta-analisis 2024 menunjukkan generasi bukan prediktor signifikan terhadap sikap terhadap perubahan.",
+          source:
+            "Ravid et al., Journal of Organizational Behavior (2024)",
+        },
+        {
+          id: 7,
+          stereotype:
+            "Mau enaknya saja — terlalu fokus work-life balance.",
+          commonBias: "Millennials",
+          reveal:
+            "Semua generasi menginginkan work-life balance — dari Boomers sampai Gen Z. Ini kebutuhan universal manusia, bukan monopoli satu generasi.",
+          source:
+            "McKinsey (2023); HBR (2022)",
+        },
+        {
+          id: 8,
+          stereotype:
+            "Kurang menghargai senior — sopan santunnya kurang.",
+          commonBias: "Gen Z",
+          reveal:
+            "Yang terjadi adalah beda cara ekspresi hormat, bukan kurang hormat. Generasi muda terbiasa dengan efisiensi digital — langsung ke poin. Di budaya Indonesia, ini kadang dianggap kurang sopan, padahal intensinya sama: menghargai waktu atasan.",
+          source:
+            "UNECE Generational Diversity Report (2025)",
+        },
+        {
+          id: 9,
+          stereotype:
+            "Mementingkan diri sendiri — self-centered.",
+          commonBias: "Millennials",
+          reveal:
+            '75% Millennials percaya bisnis harus berdampak positif ke masyarakat. Mereka aktif memprioritaskan meaningful work di atas gaji. Stereotip "self-centered" muncul dari misinterpretasi atas kebutuhan mereka untuk punya purpose.',
+          source:
+            "Deloitte Millennial Survey; HBR (2022)",
+        },
+        {
+          id: 10,
+          stereotype:
+            "Hanya bisa produktif kalau diawasi terus.",
+          commonBias: "Gen Z",
+          reveal:
+            "Gen Z justru menghargai otonomi dan ownership. Micromanagement menurunkan performa mereka secara signifikan. 89% Gen Z bahkan terbuka soal gaji ke rekan kerja — transparansi, bukan pengawasan, yang memotivasi mereka.",
+          source:
+            "McKinsey (2023); LinkedIn Workforce Survey",
+        },
+      ],
+      closing: {
+        headline:
+          "Dari 10 stereotip tadi — berapa yang asumsi Anda cocok dengan data?",
+        insight:
+          'Kebanyakan stereotip generasi tidak didukung data. Yang kita anggap "masalah generasi" sering kali adalah masalah tahap karir, personality, budaya organisasi, atau komunikasi.',
+        bridge:
+          "Sekarang, mari kita lihat data dari ruangan ini sendiri...",
+      },
+    },
     features: {
       bookACall: false,
       dashboard: true,

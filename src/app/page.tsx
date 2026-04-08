@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAllEvents } from "@/config/events";
-import { Lock } from "lucide-react";
+import { Lock, Presentation } from "lucide-react";
 
 export default function EventHub() {
   const events = getAllEvents();
@@ -24,34 +24,49 @@ export default function EventHub() {
         {/* Event Cards */}
         <div className="grid gap-4 sm:grid-cols-2">
           {events.map(([slug, event]) => (
-            <Link
+            <div
               key={slug}
-              href={`/${slug}`}
-              className="group rounded-lg border border-border bg-bg-card p-6 transition-all hover:border-border-hover hover:shadow-md"
+              className="rounded-lg border border-border bg-bg-card overflow-hidden transition-all hover:border-border-hover hover:shadow-md"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <h2 className="text-lg font-semibold text-text-primary">
-                  {event.name}
-                </h2>
-                {event.status === "active" && (
-                  <span className="inline-flex items-center gap-1 text-xs font-medium text-green-500">
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500" />
-                    Live
-                  </span>
-                )}
-                {event.status === "closed" && (
-                  <span className="text-xs font-medium text-text-muted">
-                    Selesai
-                  </span>
-                )}
-              </div>
-              <p className="text-sm text-text-secondary">
-                {event.tagline}
-              </p>
-              <p className="mt-3 text-sm font-medium text-brand group-hover:underline">
-                Lihat detail &rarr;
-              </p>
-            </Link>
+              <Link
+                href={`/${slug}`}
+                className="group block p-6"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <h2 className="text-lg font-semibold text-text-primary">
+                    {event.name}
+                  </h2>
+                  {event.status === "active" && (
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-green-500">
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500" />
+                      Live
+                    </span>
+                  )}
+                  {event.status === "closed" && (
+                    <span className="text-xs font-medium text-text-muted">
+                      Selesai
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-text-secondary">
+                  {event.tagline}
+                </p>
+                <p className="mt-3 text-sm font-medium text-brand group-hover:underline">
+                  Lihat detail &rarr;
+                </p>
+              </Link>
+              {event.quiz && (
+                <div className="px-6 pb-5">
+                  <Link
+                    href={`/${slug}/quiz`}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-white/80 bg-[#1C1917] hover:bg-[#292524] px-3 py-1.5 rounded transition-colors"
+                  >
+                    <Presentation size={12} />
+                    Buka Quiz Slideshow
+                  </Link>
+                </div>
+              )}
+            </div>
           ))}
         </div>
 

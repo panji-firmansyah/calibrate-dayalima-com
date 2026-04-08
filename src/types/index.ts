@@ -76,10 +76,35 @@ export interface EventConfig {
   scoring: ScoringConfig;
   tiers: TierDef[];
   dashboardLayout?: "default" | "pulse-check";
+  quiz?: QuizConfig;
   features: {
     bookACall: boolean;
     dashboard: boolean;
     report: boolean;
+  };
+}
+
+// ============================================================
+// Quiz Config (slideshow tool for events)
+// ============================================================
+
+export interface QuizQuestion {
+  id: number;
+  stereotype: string;
+  commonBias: string;
+  reveal: string;
+  source: string;
+}
+
+export interface QuizConfig {
+  title: string;
+  subtitle: string;
+  choices: string[];
+  questions: QuizQuestion[];
+  closing: {
+    headline: string;
+    insight: string;
+    bridge: string;
   };
 }
 
